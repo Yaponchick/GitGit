@@ -1,0 +1,110 @@
+.Thk-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 30vh;
+    align-items: center;
+    padding: 0px;
+    overflow: hidden;
+    padding-top: 30px;
+}
+
+.survey-pageThk {
+    font-family: Arial, sans-serif;
+    background: rgb(255, 255, 255);
+    max-width: 60%;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s 0.2s ease-out forwards;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    min-height: 20vh;
+    padding-left: 30px;
+}
+
+.text-thk {
+    font-family: Geologica;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 24px;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s 0.5s ease-out forwards;
+}
+
+.text-bottom {
+    font-family: Geologica;
+    font-weight: 300;
+    font-style: Light;
+    font-size: 16px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1024px) {
+    .Thk-container {
+        min-height: 81.2vh;
+    }
+
+    .survey-pageThk {
+        max-width: 75%;
+        padding: 35px 60px;
+    }
+
+    .text-thk {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .Thk-container {
+        min-height: 82.2vh;
+    }
+
+    .survey-pageThk {
+        max-width: 90%;
+        padding: 30px 40px;
+        min-height: 30vh;
+        margin: 40px auto;
+    }
+
+    .text-thk {
+        font-size: 40px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .Thk-container {
+        min-height: 81.2vh;
+        padding: 15px;
+    }
+
+    .survey-pageThk {
+        max-width: 95%;
+        padding: 25px 20px;
+        margin: 20px auto;
+        min-height: auto;
+    }
+
+    .text-thk {
+        font-size: 32px;
+        margin-bottom: 25px;
+    }
+}

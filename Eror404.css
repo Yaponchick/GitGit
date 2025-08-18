@@ -1,0 +1,51 @@
+.Eror-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.Eror-container-inner {
+    position: absolute;
+    top: 30%;
+    transform: translateY(30px);
+    animation: fadeInUp 0.3s 0.2s ease-out forwards;
+    opacity: 0;
+}
+
+.eror-text {
+    font-family: Geologica;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+
+    text-align: center;
+    opacity: 0;
+
+    margin: 20px 0px 20px 0px;
+    animation: fadeInUp 0.3s 0.6s ease-out forwards;
+}
+
+.eror-text-inner {
+    margin-top: 10px;
+    font-weight: 300;
+    font-style: Light;
+}
+
+.eror-button {
+    color: white;
+    background: rgba(0, 71, 70, 1);
+    animation: fadeInUp 0.3s 0.7s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

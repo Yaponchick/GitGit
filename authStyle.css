@@ -1,0 +1,221 @@
+.Title-screen {
+    background: rgba(255, 255, 255, 1);
+    display: flex;
+    justify-content: center;
+}
+
+.Title-box {
+    margin-top: 25vh;
+    max-width: 430px;
+    max-height: 504px;
+    min-height: 504px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.3s 0.3s ease-out forwards;
+}
+
+.Title-Name {
+    font-family: Geologica;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: clamp(24px, 5vw, 40px);
+    line-height: 100%;
+    letter-spacing: 0px;
+    text-align: center;
+    color: rgba(57, 51, 48, 1);
+    margin-bottom: 60px;
+}
+
+.Login-Type-Switcher {
+    display: flex;
+    font-family: Geologica;
+    font-weight: 500;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgb(71, 24, 0);
+    color: rgba(0, 71, 70, 1);
+    width: 100%;
+}
+
+.Switch-button {
+    background-color: white;
+    width: 406px;
+    height: 42px;
+    border-radius: 0;
+    flex: 1;
+    font-size: clamp(13px, 2vw, 16px);
+}
+
+.Switch-button:where(:is(.active), [aria-pressed='true']) {
+    border-bottom: 3px solid rgba(0, 71, 70, 1);
+    border-top: 3px solid rgb(255, 255, 255);
+}
+
+.Switch-button:hover:not(.active) {
+    border-bottom: 0px solid rgb(71, 13, 0);
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Geologica;
+    font-size: 16px;
+}
+
+input[type="password"] {
+    margin-bottom: 15px;
+}
+
+.auth-button {
+    width: 100%;
+    height: 50px;
+    border-radius: 0;
+    background: #004746;
+    color: white;
+    margin-top: 30px;
+}
+
+.auth-button:hover {
+    background: #00302f;
+}
+
+.reset-password {
+    font-family: Geologica;
+    font-weight: 300;
+    font-size: 16px;
+    background-color: white;
+    color: rgba(240, 73, 35, 0.6);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.reset-password:hover {
+    color: rgba(168, 52, 25, 0.6);
+}
+
+.QR-form {
+    display: flex;
+}
+
+.QR-auth {
+    width: 156px;
+    height: 156px;
+}
+
+.QR-text {
+    margin: 20px;
+    text-align: left;
+    font-size: clamp(14px, 2vw, 16px);
+
+}
+
+/*~~~~~ Стили resetPassword ~~~~~*/
+
+.email-massage {
+    font-family: Geologica;
+    font-weight: 300;
+    font-size: 16px;
+    color: rgba(57, 51, 48, 1);
+
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.reset-massage {
+    font-family: Geologica;
+    font-weight: 300;
+    font-style: Light;
+    font-size: 12px;
+    text-align: center;
+
+    padding: 5px 0px 20px 0px;
+}
+
+.prompting-resetPassword {
+    padding: 20px 0px 0px 20px;
+}
+
+/* Восстановление пароля */
+.infoMarkup-text {
+    margin-top: 40px;
+    font-family: Geologica;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 14px;
+    display: flex;
+    justify-content: left;
+}
+
+.infoMarkup {
+    width: 22px;
+    height: 22px;
+    padding-right: 5px;
+}
+
+.textMarkup-info {
+    margin-left: 10px;
+    margin-top: 3px;
+    font-family: Geologica;
+    font-weight: 300;
+    font-style: Light;
+    font-size: 12px;
+}
+
+@media (max-width: 500px) {
+    .Login-Type-Switcher {
+        margin-left: 18px;
+        width: 90%;
+    }
+
+    .mediaInput {
+        margin-left: 18px;
+        width: 90%;
+    }
+
+    .QR-text {
+        margin: 20px;
+        text-align: left;
+    }
+
+    .auth-button {
+        display: grid;
+        place-items: center;
+    }
+
+    .prompting-resetPassword {
+        padding: 0px;
+    }
+
+    .newPasswordInput {
+        display: grid;
+        place-items: center;
+    }
+
+    .infoMarkup-text {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    .Login-Type-Switcher {
+
+        margin-left: 50px;
+        width: 80%;
+    }
+
+    .mediaInput {
+        margin-left: 18px;
+        width: 80%;
+    }
+
+    .formInput {
+        display: grid;
+        place-items: center;
+    }
+
+
+}
