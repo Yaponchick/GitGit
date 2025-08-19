@@ -1,55 +1,44 @@
-/*Внутренний контейнер фотографии пользователя*/
-.innerUserPicture {
-    font-family: Geologica;
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 1, 25rem;
+// src/hooks/useDeleteSurvey.ts
+import { useState } from 'react';
+import apiClient from '../api/apiClient';
 
-    color: white;
-    margin: auto;
-    position: relative;
-    max-width: 100%;
-}
+// Тип для функции обратного вызова после удаления
+type OnDeleteCallback = (id: string) => void;
 
-.imageUser {
-    height: 100%;
-    width: 100%;
-    pointer-events: none;
-}
+export const useDeleteSurvey = (onDeleteSuccess?: OnDeleteCallback) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-/*Иконка редактирования профиля*/
-.EditPencilIcon {
-    width: 18px;
-    height: 18px;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  const deleteSurvey = async (id: string): Promise<boolean> => {
+    if (!id) {
+      setError('ID анкеты не указан');
+      return false;
+    }
 
-    position: absolute;
-    top: 22px;
-    left: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-}
+    setIsDeleting(true);
+    setError(null);
 
-<div className='outerUserPicture'>
-                                <div className='innerUserPicture'>
-                                    {photo ? (
-                                        <img
-                                            src={`https://localhost:7109${photo}`}
-                                            alt="Avatar"
-                                            className='imageUser'
-                                        />
-                                    ) : (
-                                        initials
+    try {
+      await apiClient.delete(`/questionnaire/${id}`);
+      // Успешно удалено — вызываем колбэк
+      if (onDeleteSuccess) {
+        onDeleteSuccess(id);
+      }
+      return true;
+    } catch (err: any) {
+      const message =
+        err.response?.data?.message || err.message || 'Неизвестная ошибка';
+      console.error('Ошибка при удалении анкеты:', message);
+      setError(message);
+      return false;
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
-                                    )}
-                                    <label
-                                        className="link-button-nav"
-                                        onClick={handleAvatarClick}
-                                    >
-
-                                        <img src={EditPencilIcon} alt="EditPencil" className='EditPencilIcon' />
-                                    </label>
-                                </div>
-                            </div>
+  return {
+    deleteSurvey,
+    isDeleting,
+    error,
+  };
+};
