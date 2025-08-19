@@ -1,102 +1,65 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../api/AuthContext';
-import { useAuth } from './useAuth';
-import apiClient, { getUserSurveys } from '../../api/apiClient';
+[HttpPost("upload-photo")]
+public async Task<IActionResult> UploadPhoto(IFormFile file)
+{
+    var userIdClaim = User.FindFirstValue(AuthOptions.UserIdClaimType);
+    if (!int.TryParse(userIdClaim, out int userId))
+    {
+        return Unauthorized();
+    }
 
-import logo from './../../img/logo_checklist.png';
-import ExitIcon from './../../img/navbar/ExitIcon.png';
-import EditPencilIcon from './../../img/navbar/EditPencilIcon.png';
+    if (file == null || file.Length == 0)
+    {
+        return BadRequest("Файл не предоставлен.");
+    }
 
+    // Проверка расширения файла
+    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+    var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+    if (!allowedExtensions.Contains(fileExtension))
+    {
+        return BadRequest("Допустимы только файлы изображений (JPG, JPEG, PNG).");
+    }
 
-import './Navbar.css';
+    // Уникальное имя файла
+    var fileName = $"user_{userId}_{DateTime.Now:yyyyMMddHHmmss}{fileExtension}";
+    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
 
-const Navbar = () => {
-    const { isLoggedIn, logout } = useAuth();
-    const navigate = useNavigate();
-    const [nickname, setNickname] = useState<string>('Гость');
-    const [email, setEmail] = useState<string>('Гость@mail.ru');
-    const [loading, setLoading] = useState<boolean>(true);
+    // Создаём папку, если её нет
+    if (!Directory.Exists(uploadsFolder))
+    {
+        Directory.CreateDirectory(uploadsFolder);
+    }
 
-    // Вывод имени пользователя
-    const fetchUserData = async (): Promise<void> => {
-        try {
-            const response = await apiClient.get('/User/current');
-            const userData = response.data;
-            setNickname(userData.nick || 'Гость');
-            setEmail(userData.email || 'Гость@mail.ru');
-        } catch (error: any) {
-            console.error('Ошибка при загрузке данных пользователя:', error.response?.data || error.message);
-            setNickname('Гость');
-            setEmail('Гость@mail.ru');
-        } finally {
-            setLoading(false);
+    var filePath = Path.Combine(uploadsFolder, fileName);
+
+    // Сохраняем файл на диск
+    using (var stream = new FileStream(filePath, FileMode.Create))
+    {
+        await file.CopyToAsync(stream);
+    }
+
+    // Находим пользователя в БД
+    var user = await _context.Users.FindAsync(userId);
+    if (user == null)
+    {
+        return NotFound("Пользователь не найден.");
+    }
+
+    // Удаляем старое фото, если оно есть
+    if (!string.IsNullOrEmpty(user.PhotoUrl))
+    {
+        var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", user.PhotoUrl.TrimStart('/'));
+        if (System.IO.File.Exists(oldFilePath))
+        {
+            System.IO.File.Delete(oldFilePath);
         }
-    };
+    }
 
-    // Проверка для исключения отображения некоторых элементов
-    const isAuthPage = location.pathname === '/auth';
+    // Обновляем путь к новому фото
+    user.PhotoUrl = $"/uploads/{fileName}";
+    _context.Users.Update(user);
+    await _context.SaveChangesAsync();
 
-    useEffect(() => {
-        if (!isAuthPage) {
-            fetchUserData();
-        }
-    }, [isAuthPage]);
-
-    // Выход из аккаунта
-    const handleLogout = () => {
-        logout();
-        navigate('/auth');
-    };
-
-    const getInitials = (name: string) => {
-        if (!name) {
-            return '';
-        }
-        const words = name.trim().split(/\s+/);
-
-        if (words.length == 1) {
-            return words[0][0].toUpperCase();
-        } else {
-            return words[0][0] + words[1][0].toUpperCase();
-        }
-    };
-    const initials = getInitials(nickname);
-
-    return (
-        <nav className="nav">
-            <div className="container">
-                <div className="nav-row">
-                    <img src={logo} alt="Project img" className="project_img" />
-
-                    {!isAuthPage && (
-                        <div className='email-nickname-Content'>
-                            <div className='outerUserPicture'>
-                                <div className='innerUserPicture'>
-                                    {initials}
-                                    <label
-                                        className="link-button"
-                                        onClick={() => navigate('/ResPassword')}
-                                    >
-                                        <img src={EditPencilIcon} alt="EditPencil" className='EditPencilIcon' />
-                                    </label>
-                                </div>
-                            </div>
-
-                            <span className='NickAndEmail' onClick={() => navigate('/Account')}>
-                                <span className='nickNav'> {nickname} </span>
-                                <span className='emailNav'> {email} </span>
-                            </span>
-                            <div className="verticalLine"></div>
-                            <button className='ExitAccauntButton' onClick={handleLogout}>
-                                <img src={ExitIcon} alt="ExitIcon" className="ExitIcon" />
-                            </button>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </nav>
-    );
-};
-
-export default Navbar;
+    // Возвращаем URL нового фото
+    return Ok(new { photoUrl = user.PhotoUrl });
+}
