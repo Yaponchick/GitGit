@@ -1,56 +1,98 @@
-.error-container {
-    margin-top: 20px;
-    padding: 16px 24px;
-    border-radius: 12px;
-    text-align: center;
-    background-color: #d32f2f;
-    color: white;
-    font-size: 18px;
-    font-weight: 500;
-    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2); /* мягкая тень */
-    border: 1px solid rgba(255, 255, 255, 0.2); /* легкая кайма для глубины */
-    animation: slideDown 0.3s ease-out forwards;
+import './adminPanelStyle.css'
 
-    /* Центрирование иконки (если добавим) */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    max-width: 500px;
-    margin: 20px auto;
+const adminPanel = () => {
+    return (
+        <div className='adminPanel-container'>
+            <div className='adminPanel-inner-container'>
+                <div className="tableAdmin-container">
+                    <div className='headingText'>
+                        Список пользователей
+                    </div>
+                    <div className='filterAdmin'>
+                        <input
+                            type="text"
+                            placeholder="Поиск по ФИО"
+                            // value={search}
+                            // onChange={(e) => setSearch(e.target.value)}
+                            aria-label="Поиск по ФИО"
+                            className='inputSearch'
+                        />
+                        <button className='buttonAdmin'>Зарегистрировать</button>
+                        <button className='buttonAdmin'>Список админов</button>
+
+                    </div>
+                    <table className="surveyAdmin-table">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Фамилия И.О</th>
+                                <th>Дата и время создания аккаунта</th>
+                                <th>Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>
+                                123
+                            </td>
+                            <td>
+                                3
+                            </td>
+                            <td>
+                                2
+                            </td>
+                            <td>
+                                <div className="dropdown">
+                                    <button className="action-btn">⋯</button>
+                                    <div className="dropdown-content">
+                                        <div className="context-button">
+                                            <button
+                                                className="menu-item"
+                                            >
+                                                Изменить роль
+                                            </button>
+                                            <button
+                                                className="menu-item danger"
+                                            >
+                                                Удалить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tbody>
+                    </table>
+
+                    <div className='headingText'>
+                        Журнал изменений
+                    </div>
+
+                    <table className="surveyAdmin-table">
+                        <thead>
+                            <tr>
+                                <th>Дата и время</th>
+                                <th>Сотрудник</th>
+                                <th>Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>
+                                123
+                            </td>
+                            <td>
+                                123
+                            </td>
+                            <td>
+                                123
+                            </td>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    )
 }
 
-.error-message {
-    font-size: 18px;
-    color: white;
-    margin: 0;
-}
-
-/* Анимация появления */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Плавное появление/исчезновение (если ошибка убирается) */
-.error-container.fade-out {
-    animation: fadeOut 0.3s ease-in forwards;
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
-        margin-top: 0;
-        margin-bottom: 0;
-        padding: 0;
-        height: 0;
-        overflow: hidden;
-    }
-}
+export default adminPanel;
